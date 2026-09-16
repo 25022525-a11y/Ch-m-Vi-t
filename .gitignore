@@ -1,0 +1,11 @@
+/node_modules
+/.next
+/out
+/coverage
+/.vercel
+/.visual-review-temp
+/references
+*.log
+.DS_Store
+.env*
+!.env.example
