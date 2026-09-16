@@ -16,7 +16,7 @@ const bodyFont = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Chạm Việt – Mảnh Vị",
+  title: "CHẠM VIỆT – MẢNH VỊ",
   description:
     "Sưu tầm Mảnh Vị, chạm để kết nối và mở những câu chuyện ẩm thực Việt Nam.",
 };

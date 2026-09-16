@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
-  title: "Bộ sưu tập Mảnh Vị | Chạm Việt",
+  title: "Bộ sưu tập Mảnh Vị | CHẠM VIỆT – MẢNH VỊ",
   description:
     "Theo dõi Mảnh Vị đã sưu tầm, kết nối hai hương vị và mở những câu chuyện Việt.",
 };
