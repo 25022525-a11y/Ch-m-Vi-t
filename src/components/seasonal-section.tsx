@@ -2,7 +2,7 @@ import { AssetPlaceholder } from "@/components/asset-placeholder";
 
 export function SeasonalSection() {
   return (
-    <section className="seasonal" aria-labelledby="seasonal-title">
+    <section id="tet-viet" className="seasonal" aria-labelledby="seasonal-title">
       <div className="section-shell seasonal__grid">
         <div className="seasonal__copy">
           <p className="eyebrow">Chủ đề theo mùa · Tết Việt</p>

@@ -8,7 +8,7 @@ export function FlavorCollection() {
         <div className="section-heading section-heading--row">
           <div>
             <p className="eyebrow">Bộ sưu tập mở đầu</p>
-            <h2 id="collection-title">Sáu hương vị, sáu lối vào Việt Nam</h2>
+            <h2 id="collection-title">Một bộ sưu tập.<br />Muôn miền hương vị.</h2>
           </div>
           <a className="text-link" href="#unlock-story">
             Thử kết nối hai Mảnh Vị <span aria-hidden="true">→</span>
@@ -20,7 +20,7 @@ export function FlavorCollection() {
             <FlavorCard key={flavor.id} flavor={flavor} />
           ))}
         </div>
-        <p className="mock-note">Dữ liệu bộ sưu tập đang dùng cho mục đích trình diễn.</p>
+        <div className="collection-bottomline"><span>01 — 08 / HƯƠNG VỊ MỞ ĐẦU</span><p>Từ món ăn quen thuộc, khám phá những câu chuyện chưa từng kể.</p></div>
       </div>
     </section>
   );

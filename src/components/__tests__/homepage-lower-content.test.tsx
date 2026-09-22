@@ -10,9 +10,11 @@ describe("homepage lower content", () => {
     const { rerender } = render(<VietnamJourney />);
     expect(screen.getByRole("heading", { name: /hành trình vị việt/i })).toBeInTheDocument();
     expect(screen.getAllByRole("listitem")).toHaveLength(4);
+    expect(screen.getByText("Hoàng Sa")).toBeInTheDocument();
+    expect(screen.getByText("Trường Sa")).toBeInTheDocument();
 
     rerender(<FeaturedStory />);
-    expect(screen.getByRole("heading", { name: /người giữ vị bên bờ sông hương/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /người giữ vị bên dòng sông quê/i })).toBeInTheDocument();
 
     rerender(<SeasonalSection />);
     expect(screen.getByRole("heading", { name: /tết sum vầy/i })).toBeInTheDocument();

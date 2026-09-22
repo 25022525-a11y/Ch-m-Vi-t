@@ -26,6 +26,11 @@ export function HeroSection() {
           <p className="hero__note">
             Collectible vật lý <span aria-hidden="true">•</span> Trải nghiệm số
           </p>
+          <div className="hero__stats" aria-label="Quy mô bộ sưu tập mẫu">
+            <div><strong>08</strong><span>Mảnh vị mở đầu</span></div>
+            <div><strong>03</strong><span>Miền hương vị</span></div>
+            <div><strong>∞</strong><span>Câu chuyện để khám phá</span></div>
+          </div>
         </div>
 
         <div className="hero__visual">
@@ -38,6 +43,7 @@ export function HeroSection() {
             <span />
             CHẠM
           </div>
+          <div className="hero__visual-caption"><span>01 / MẢNH VỊ</span><strong>Gom vị Việt, mở chuyện Việt</strong></div>
         </div>
       </div>
     </section>

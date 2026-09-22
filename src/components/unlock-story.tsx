@@ -5,27 +5,76 @@ import { useState } from "react";
 import { AssetPlaceholder } from "@/components/asset-placeholder";
 import { FlavorCard } from "@/components/flavor-card";
 import type { Flavor } from "@/data/flavors";
+import { featuredUnlockIds, unlockPreviews } from "@/data/unlock-stories";
 
 type UnlockStoryProps = {
   flavors: Flavor[];
 };
 
-export function UnlockStory({ flavors }: UnlockStoryProps) {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+type SlotIds = [string | null, string | null];
 
-  const selectedFlavors = selectedIds
-    .map((id) => flavors.find((flavor) => flavor.id === id))
-    .filter((flavor): flavor is Flavor => Boolean(flavor));
-  const isUnlocked = selectedFlavors.length === 2;
+function UnlockSlot({
+  label,
+  flavor,
+  onRemove,
+}: {
+  label: "A" | "B";
+  flavor?: Flavor;
+  onRemove: () => void;
+}) {
+  return (
+    <div className={`unlock-slot ${flavor ? "unlock-slot--filled" : ""}`} role="group" aria-label={`Chạm ${label}`}>
+      <div className="unlock-slot__top">
+        <span>Chạm {label}</span>
+        {flavor ? (
+          <button type="button" onClick={onRemove} aria-label={`Xóa ${flavor.name} khỏi Chạm ${label}`}>
+            ×
+          </button>
+        ) : null}
+      </div>
+      {flavor ? (
+        <div className="unlock-slot__item" key={flavor.id}>
+          <AssetPlaceholder assetKey={flavor.assetKey} className="unlock-slot__image" decorative />
+          <div className="unlock-slot__details">
+            <strong>{flavor.shortName}</strong>
+            <small>{flavor.place} · {flavor.region}</small>
+          </div>
+        </div>
+      ) : (
+        <div className="unlock-slot__empty">
+          <span aria-hidden="true">+</span>
+          <strong>Chọn mảnh thứ {label === "A" ? "nhất" : "hai"}</strong>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function UnlockStory({ flavors }: UnlockStoryProps) {
+  const [slotIds, setSlotIds] = useState<SlotIds>([null, null]);
+
+  const [flavorA, flavorB] = slotIds.map((id) => flavors.find((flavor) => flavor.id === id));
+  const story = unlockPreviews.find((preview) =>
+    preview.flavorIds.every((id) => slotIds.includes(id)),
+  );
+  const isUnlocked = Boolean(story);
+  const pairSelected = Boolean(flavorA && flavorB);
+  const choices = flavors.length > 3
+    ? flavors.filter((flavor) => featuredUnlockIds.some((id) => id === flavor.id))
+    : flavors;
 
   function toggleFlavor(flavor: Flavor) {
-    setSelectedIds((current) => {
-      if (current.includes(flavor.id)) {
-        return current.filter((id) => id !== flavor.id);
-      }
-
-      return [...current.slice(-1), flavor.id];
+    setSlotIds(([a, b]) => {
+      if (a === flavor.id) return [null, b];
+      if (b === flavor.id) return [a, null];
+      if (!a) return [flavor.id, b];
+      // Keep A as the anchor when a new flavor is chosen after both slots fill.
+      return [a, flavor.id];
     });
+  }
+
+  function removeFromSlot(slot: 0 | 1) {
+    setSlotIds(([a, b]) => slot === 0 ? [null, b] : [a, null]);
   }
 
   return (
@@ -41,47 +90,49 @@ export function UnlockStory({ flavors }: UnlockStoryProps) {
         </div>
 
         <div className="unlock-story__workspace">
-          <div className="unlock-story__choices" aria-label="Chọn Mảnh Vị để kết nối">
-            {flavors.slice(0, 3).map((flavor) => (
-              <FlavorCard
-                key={flavor.id}
-                flavor={flavor}
-                compact
-                selected={selectedIds.includes(flavor.id)}
-                onSelect={toggleFlavor}
-              />
-            ))}
+          <div className="unlock-story__picker">
+            <p className="unlock-story__choice-note">
+              {pairSelected
+                ? "Đã đủ hai mảnh. Chọn món khác để thay Chạm B."
+                : "Chọn lần lượt hai Mảnh Vị cho Chạm A và Chạm B."}
+            </p>
+            <div className="unlock-story__choices" role="group" aria-label="Chọn Mảnh Vị để kết nối">
+              {choices.map((flavor) => (
+                <FlavorCard
+                  key={flavor.id}
+                  flavor={flavor}
+                  compact
+                  selected={slotIds.includes(flavor.id)}
+                  selectionSlot={slotIds[0] === flavor.id ? "A" : slotIds[1] === flavor.id ? "B" : undefined}
+                  onSelect={toggleFlavor}
+                />
+              ))}
+            </div>
           </div>
 
           <div className="unlock-story__equation" aria-live="polite">
-            <div className={`unlock-slot ${selectedFlavors[0] ? "unlock-slot--filled" : ""}`}>
-              <span>Chạm A</span>
-              <strong>{selectedFlavors[0]?.shortName ?? "Chọn mảnh thứ nhất"}</strong>
-            </div>
+            <UnlockSlot label="A" flavor={flavorA} onRemove={() => removeFromSlot(0)} />
             <span className="unlock-story__operator" aria-hidden="true">+</span>
-            <div className={`unlock-slot ${selectedFlavors[1] ? "unlock-slot--filled" : ""}`}>
-              <span>Chạm B</span>
-              <strong>{selectedFlavors[1]?.shortName ?? "Chọn mảnh thứ hai"}</strong>
-            </div>
+            <UnlockSlot label="B" flavor={flavorB} onRemove={() => removeFromSlot(1)} />
             <span className="unlock-story__operator" aria-hidden="true">→</span>
 
             <article className={`unlock-result ${isUnlocked ? "unlock-result--open" : ""}`}>
               <div className="unlock-result__visual">
-                <AssetPlaceholder assetKey="unlock-linked-story" decorative={!isUnlocked} />
+                <AssetPlaceholder assetKey={story?.image ?? "unlock-linked-story"} decorative={!isUnlocked} />
               </div>
               <div className="unlock-result__copy">
                 <p className="unlock-result__status">
-                  {isUnlocked ? "Đã kết nối 2 Mảnh Vị" : "Câu chuyện đang khóa"}
+                  {isUnlocked ? "Đã kết nối 2 Mảnh Vị" : pairSelected ? "Đang hoàn thiện mối liên hệ" : "Câu chuyện đang khóa"}
                 </p>
-                <h3>{isUnlocked ? "Hai tô nước — Hai miền ký ức" : "Chọn đủ hai Mảnh Vị"}</h3>
+                <h3>{story?.title ?? (pairSelected ? "Thử một cặp chuyện khác" : "Chọn đủ hai Mảnh Vị")}</h3>
                 <p>
-                  {isUnlocked
-                    ? "Cùng là nước dùng, mỗi tô lại kể về một miền đất và một cách nâng niu hương vị riêng."
-                    : "Khi hai mảnh gặp nhau, câu chuyện phía sau sự kết nối sẽ hiện ra tại đây."}
+                  {story?.excerpt ?? (pairSelected
+                    ? "Bản demo hiện có chuyện Phở × Bún bò Huế và Bánh chưng × Bánh tét. Hãy chọn một trong hai cặp để mở bản xem trước."
+                    : "Khi hai mảnh gặp nhau, câu chuyện phía sau sự kết nối sẽ hiện ra tại đây.")}
                 </p>
-                {isUnlocked ? (
-                  <a className="button button--gold" href="#cau-chuyen">
-                    Mở câu chuyện <span aria-hidden="true">→</span>
+                {story ? (
+                  <a className="button button--gold" href={story.href}>
+                    {story.action} <span aria-hidden="true">→</span>
                   </a>
                 ) : null}
               </div>

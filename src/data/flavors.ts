@@ -66,4 +66,22 @@ export const flavors: Flavor[] = [
     assetKey: "cao-lau",
     collected: false,
   },
+  {
+    id: "banh-chung",
+    name: "Bánh chưng Bắc Bộ",
+    shortName: "Bánh chưng",
+    region: "Miền Bắc",
+    place: "Bắc Bộ",
+    assetKey: "banh-chung",
+    collected: true,
+  },
+  {
+    id: "banh-tet",
+    name: "Bánh tét Nam Bộ",
+    shortName: "Bánh tét",
+    region: "Miền Nam",
+    place: "Nam Bộ",
+    assetKey: "banh-tet",
+    collected: true,
+  },
 ];
