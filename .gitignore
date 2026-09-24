@@ -4,7 +4,7 @@
 /coverage
 /.vercel
 /.visual-review-temp
-/references
+/.refine-review.cjs
 *.log
 .DS_Store
 .env*
