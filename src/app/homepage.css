@@ -24,7 +24,6 @@
 /* Masthead and hero */
 .homepage .site-header { background: #fffaf2; border-bottom-color: #e3d8c5; }
 .homepage .site-header__inner { min-height: 5.3rem; }
-.homepage .wordmark__seal { color: #fffaf2; border-color: var(--color-heritage); background: var(--color-heritage); }
 .homepage .wordmark strong { font-size: 1.25rem; letter-spacing: .015em; }
 .homepage .wordmark small { letter-spacing: .25em; }
 .homepage .site-nav a { font-size: .76rem; }

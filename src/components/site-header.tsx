@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -17,7 +18,15 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="site-header__inner">
         <Link className="wordmark" href="/" aria-label="Chạm Việt – Trang chủ">
-          <span className="wordmark__seal" aria-hidden="true">C</span>
+          <Image
+            className="wordmark__logo"
+            src="/icon-192.png"
+            alt=""
+            width={44}
+            height={44}
+            preload
+            unoptimized
+          />
           <span>
             <strong>CHẠM VIỆT</strong>
             <small>MẢNH VỊ</small>

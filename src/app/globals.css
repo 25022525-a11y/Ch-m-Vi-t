@@ -162,15 +162,12 @@ a {
   text-decoration: none;
 }
 
-.wordmark__seal {
-  display: grid;
-  width: 2.55rem;
-  height: 2.55rem;
-  place-items: center;
-  border: 1px solid var(--color-heritage);
-  border-radius: 50%;
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 1.45rem;
+.wordmark__logo {
+  display: block;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  object-fit: contain;
 }
 
 .wordmark strong,
